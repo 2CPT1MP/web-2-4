@@ -23,7 +23,7 @@ xmlDoc.children[0].appendChild(ageNode);
 
 console.log(xmlDoc);
 
-postXML('https://api.weatherapi.com/v1/current.xml', xmlDoc).then((r) => {
+postXML("https://api.weatherapi.com/v1/current.xml", xmlDoc).then((r) => {
     console.log(r)
 }).catch(r => {
     console.log("EL:", r.getElementsByTagName("message")[0].textContent)

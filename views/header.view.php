@@ -43,7 +43,7 @@ class HeaderView {
                 <script src="/scripts/popover.js"></script>
                 <script src="/scripts/window.js"></script>
                 <script src="/scripts/calendar.js"></script>
-                <script src="/scripts/requests/fetchJsonScript.js" type="module"></script>
+                
                 <script src="/scripts/requests/xhrXmlScript.js" type="module"></script>
             </head>
             <body>

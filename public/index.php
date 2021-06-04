@@ -19,6 +19,7 @@ require_once('../controllers/interests.controller.php');
 require_once('../controllers/auth.controller/login.controller.php');
 require_once('../controllers/auth.controller/logout.controller.php');
 require_once('../controllers/auth.controller/register.controller.php');
+require_once('../controllers/auth.controller/check-credentials.controller.php');
 require_once('../controllers/studies.controller.php');
 require_once('../controllers/photos.controller.php');
 require_once('../controllers/test.controller/test-verifier.controller.php');
@@ -47,6 +48,7 @@ $rootRouter->addController('/logout', new LogoutController());
 $rootRouter->addController('/register', new RegisterController());
 $rootRouter->addController('/stat', new StatController());
 $rootRouter->addController('/admin', new AdminController());
+$rootRouter->addController('/check-credentials', new CheckCredentialsController());
 
 
 $statRecord = new Stat();
