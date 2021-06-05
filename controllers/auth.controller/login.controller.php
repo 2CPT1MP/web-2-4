@@ -22,6 +22,7 @@ class LoginController extends RestController {
 
         if (isset($foundUser[0]) ) {
             $_SESSION['name'] = $foundUser[0]->getName();
+            $_SESSION['userId'] = $foundUser[0]->getId();
             return [true, "USER"];
         }
         return [false, "USER"];

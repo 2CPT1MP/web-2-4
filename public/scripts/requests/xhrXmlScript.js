@@ -18,15 +18,22 @@ const submitHandler = (event) => {
     xmlDoc.children[0].appendChild(messageNode);
     xmlDoc.children[0].appendChild(postIdNode);
 
-    console.log(xmlDoc);
 
-    postXML("https://localhost3434.ri", xmlDoc).then((r) => {
-        console.log(r)
-    }).catch(r => {
+    postXML("http://localhost/blog/add-comment", xmlDoc).then((r) => {
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(r,"text/xml");
+
+        const message = xmlDoc.getElementsByTagName("message")[0].textContent;
+        const timestamp = xmlDoc.getElementsByTagName("timestamp")[0].textContent;
+        const name = xmlDoc.getElementsByTagName("name")[0].textContent;
+
         const parentContainer = document.getElementById(postId);
         const newComment = document.createElement("div");
-        newComment.innerHTML = message;
-        parentContainer.appendChild(newComment)
+        newComment.innerHTML = `${timestamp} <b>${name}</b> ${message}`;
+        parentContainer.appendChild(newComment);
+
+    }).catch(r => {
+        console.log("ERROR");
     });
 }
 

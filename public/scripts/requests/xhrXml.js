@@ -3,7 +3,7 @@ const xhrXml = (method, url, body = null) => {
         const xhr = new XMLHttpRequest();
         xhr.open(method, url);
         xhr.setRequestHeader("Content-Type", "text/xml")
-        xhr.responseType = "document";
+        //xhr.responseType = "document";
 
         xhr.onload = () => {
             if (xhr.status >= 400)
@@ -12,7 +12,7 @@ const xhrXml = (method, url, body = null) => {
         }
 
         xhr.onerror = () => {
-            reject(xhr.response)
+            return reject(xhr.response)
         };
 
         xhr.send(body);

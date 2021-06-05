@@ -34,7 +34,7 @@ class BlogView {
                     <p class='no-margin'>{$message->getText()}</p>
                     <form action='' class='small message-form'>
                         <input type='hidden' name='postId' value=\"{$message->getId()}\">
-                        <input type='text' placeholder='Добавить коментарий' name='message'>
+                        <input type='text' placeholder='Добавить коментарий' name='message' required>
                         <button type='submit' id='send-message'>Отправить</button>
                     </form>
                </div>
@@ -43,7 +43,7 @@ class BlogView {
 
             $msgs .= "<div>";
             foreach ($message->getComments() as $comment)
-                $msgs .= "{$comment->getTimestamp()} {$comment->getName()} {$comment->getComment()}";
+                $msgs .= "{$comment->getTimestamp()} <b>{$comment->getName()}</b> {$comment->getComment()}<br>";
             $msgs .= "</div>";
         }
 
