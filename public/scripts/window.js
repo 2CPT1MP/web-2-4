@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    $('form').submit(function(e) {
+    $('form:not(.message-form)').submit(function(e) {
         e.preventDefault();
         $('body > *:not(.confirm-dialog)').css({'filter': 'blur(1px)', 'pointer-events': 'none'});
         $('body').prepend('<div class="confirm-dialog"><p>Введённые данные верны?</p><button type="submit" ' +

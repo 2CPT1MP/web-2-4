@@ -44,7 +44,7 @@ class HeaderView {
                 <script src="/scripts/window.js"></script>
                 <script src="/scripts/calendar.js"></script>
                 
-                <script src="/scripts/requests/xhrXmlScript.js" type="module"></script>
+                <!--script src="/scripts/requests/xhrXmlScript.js" type="module"></script-->
             </head>
             <body>
             <header class="dark-background">

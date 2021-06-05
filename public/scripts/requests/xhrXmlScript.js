@@ -1,30 +1,34 @@
-import {getXML, postXML} from './xhrXml.js';
+import {postXML} from './xhrXml.js';
 
-getXML('https://api.weatherapi.com/v1/current.xml').then((r) => {
-    console.log(r)
-}).catch(r => {
-    console.log("EL:", r.getElementsByTagName("message")[0].textContent)
-});
+const messageForms = document.getElementsByClassName("message-form");
+const submitHandler = (event) => {
+    event.preventDefault();
+    const message = event.target.elements.message.value;
+    const postId = event.target.elements.postId.value;
 
-const xmlDoc = document.implementation.createDocument(null, "person");
+    const xmlDoc = document.implementation.createDocument(null, "comment");
+    const messageNode = xmlDoc.createElement("message");
+    const messageTextNode = xmlDoc.createTextNode(message);
 
-const nameNode = xmlDoc.createElement("name");
-const nameTextNode = xmlDoc.createTextNode("Blade Wolfmoon");
+    const postIdNode = xmlDoc.createElement("postId");
+    const postIdTextNode = xmlDoc.createTextNode(postId);
 
-const ageNode = xmlDoc.createElement("age");
-ageNode.setAttribute("type", "int");
-const ageTextNode = xmlDoc.createTextNode("20");
+    messageNode.appendChild(messageTextNode);
+    postIdNode.appendChild(postIdTextNode);
+    xmlDoc.children[0].appendChild(messageNode);
+    xmlDoc.children[0].appendChild(postIdNode);
 
-nameNode.appendChild(nameTextNode);
-ageNode.appendChild(ageTextNode);
+    console.log(xmlDoc);
 
-xmlDoc.children[0].appendChild(nameNode);
-xmlDoc.children[0].appendChild(ageNode);
+    postXML("https://localhost3434.ri", xmlDoc).then((r) => {
+        console.log(r)
+    }).catch(r => {
+        const parentContainer = document.getElementById(postId);
+        const newComment = document.createElement("div");
+        newComment.innerHTML = message;
+        parentContainer.appendChild(newComment)
+    });
+}
 
-console.log(xmlDoc);
-
-postXML("https://api.weatherapi.com/v1/current.xml", xmlDoc).then((r) => {
-    console.log(r)
-}).catch(r => {
-    console.log("EL:", r.getElementsByTagName("message")[0].textContent)
-});
+for (let messageForm of messageForms)
+    messageForm.addEventListener('submit', submitHandler);

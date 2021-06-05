@@ -324,5 +324,9 @@ header a {
 	color: white;
 }
 
+.small input, .small button {
+	width: fit-content;
+}
+
 
 

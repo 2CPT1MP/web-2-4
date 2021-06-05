@@ -27,14 +27,24 @@ class BlogView {
             $imagePath = ($hasImg)? $message->getImagePath() : "";
 
             $msgs .= "
-               <div class='msg-block'>
+               <div class='msg-block' id=\"{$message->getId()}\">
                     <img src='/blog/userImage?id=$imagePath' width='50px' alt='Нет изображения'><br>
                     <p class='no-margin'>{$message->getTimestamp()}</p>
                     <b>{$message->getTopic()}</b><br>
                     <p class='no-margin'>{$message->getText()}</p>
-                   
+                    <form action='' class='small message-form'>
+                        <input type='hidden' name='postId' value=\"{$message->getId()}\">
+                        <input type='text' placeholder='Добавить коментарий' name='message'>
+                        <button type='submit' id='send-message'>Отправить</button>
+                    </form>
                </div>
+               <script src='/scripts/requests/xhrXmlScript.js' type='module'></script>
             ";
+
+            $msgs .= "<div>";
+            foreach ($message->getComments() as $comment)
+                $msgs .= "{$comment->getTimestamp()} {$comment->getName()} {$comment->getComment()}";
+            $msgs .= "</div>";
         }
 
         $msgs .= "</article>";

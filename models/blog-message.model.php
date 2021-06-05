@@ -3,11 +3,30 @@ require_once(__DIR__ . '/../core/active-record/entity.core.php');
 require_once(__DIR__ . '/../core/active-record/active-record.core.php');
 require_once(__DIR__ . '/../core/active-record/filter.core.php');
 require_once(__DIR__ . '/../core/active-record/order.core.php');
+require_once(__DIR__ . '/../models/comment.model.php');
 
 class BlogMessage implements IEntity {
     private int | null $id = null;
     private string | null $imagePath = null;
     private string $topic, $text, $timestamp;
+    /** @var Comment[] $comments */
+    private array $comments;
+
+    /**
+     * @return Comment[]
+     */
+    public function getComments(): array
+    {
+        return $this->comments;
+    }
+
+    /**
+     * @param Comment[] $comments
+     */
+    public function setComments(array $comments): void
+    {
+        $this->comments = $comments;
+    }
 
     private function setId($id) { $this->id = $id; }
     public function setTopic(string $topic): void { $this->topic = $topic; }
@@ -34,10 +53,23 @@ class BlogMessage implements IEntity {
         $res = $query->execute();
 
         $this->setId(ActiveRecord::getDatabaseObject()->lastInsertId());
+        $this->saveComments();
+
         return $res;
     }
 
     public function hasImage(): bool { return $this->imagePath !== null; }
+
+    public function addComment(Comment $comment) {
+        $this->comments[] = $comment;
+    }
+
+    private function saveComments(): void {
+        foreach ($this->comments as $comment) {
+            $comment->setPostId($this->id);
+            $comment->save();
+        }
+    }
 
     private function updateExisting(): bool {
         if (!isset($this->timestamp))
@@ -52,6 +84,7 @@ class BlogMessage implements IEntity {
         ");
 
         $this->bindValuesToQuery($query);
+        $this->saveComments();
         return $query->execute();
     }
 
@@ -69,6 +102,10 @@ class BlogMessage implements IEntity {
             WHERE id = :id;
         ");
         $query->bindParam(':id', $this->id);
+
+        foreach ($this->comments as $comment)
+            $comment->delete();
+
         return $query->execute();
     }
 
@@ -76,18 +113,28 @@ class BlogMessage implements IEntity {
         self::sync();
         $idFilter = new Filter();
         $idFilter->addCondition("id", $id);
-        return self::find($idFilter);
+
+        $result = self::find($idFilter);
+        $result->setComments(Comment::findForPost($result->getId()));
+        return $result;
     }
 
     /** @return BlogMessage[] */
     static function findAll(): array {
         self::sync();
+        $results = self::find(new Filter());
+
+        foreach ($results as $result)
+            $result->setComments(Comment::findForPost($result->getId()));
+
         return self::find(new Filter());
     }
 
     static function deleteAll(): bool {
         $success = true;
         foreach(BlogMessage::findAll() as $message) {
+            foreach ($message->getComments() as $comment)
+                $comment->delete();
             $result = $message->delete();
             if (!$result)
                 $success = false;
@@ -99,7 +146,12 @@ class BlogMessage implements IEntity {
         self::sync();
         $filter = new Filter();
         $filter->setLimit(new Limit($page, $recordsPerPage));
-        return self::find($filter);
+        $results = self::find($filter);
+
+        foreach ($results as $result)
+            $result->setComments(Comment::findForPost($result->getId()));
+
+        return $results;
     }
 
     public static function getPageCount(int $recordsPerPage): int {
@@ -155,6 +207,7 @@ class BlogMessage implements IEntity {
         $query->execute();
     }
 
+    /** @return BlogMessage | BlogMessage[] */
     static function find(Filter $filter, bool $fetchAll = true): BlogMessage | array {
         return ActiveRecord::find("BlogMessage",
             "BlogMessage::sync",
