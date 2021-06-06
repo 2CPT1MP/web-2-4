@@ -12,7 +12,6 @@ const submitMsgHandler = (event) => {
     const topic = event.target.elements.topic.value;
     const text = event.target.elements.text.value;
     const postId = event.target.elements.postId.value;
-    //event.target.parentNode.setAttribute('hidden', '');
 
     const editBlock = document.getElementById(`form-${postId}`);
     editBlock.removeAttribute('hidden');
@@ -22,7 +21,7 @@ const submitMsgHandler = (event) => {
         text
     }
 
-    const req = $.ajax(`http://localhost/blog/edit-comment?postId=${postId}`, {
+    const req = $.ajax(`/blog/edit-comment?postId=${postId}`, {
         contentType: 'application/json',
         data: JSON.stringify(editedPost),
         method: 'POST',

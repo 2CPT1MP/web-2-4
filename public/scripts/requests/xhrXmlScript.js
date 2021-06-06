@@ -19,7 +19,7 @@ const submitHandler = (event) => {
     xmlDoc.children[0].appendChild(postIdNode);
 
 
-    postXML("http://localhost/blog/add-comment", xmlDoc).then((r) => {
+    postXML(`/blog/add-comment`, xmlDoc).then((r) => {
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(r,"text/xml");
 

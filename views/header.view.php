@@ -1,5 +1,5 @@
-<?php
 
+<?php
 class HeaderView {
     public static function render(string $title): string {
         if (!isset($_SESSION)) session_start();
@@ -25,6 +25,7 @@ class HeaderView {
         }
 
 
+        $env = getenv("WEB_BASE_URL");
 
 
         $html = <<<HTML
@@ -43,8 +44,6 @@ class HeaderView {
                 <script src="/scripts/popover.js"></script>
                 <script src="/scripts/window.js"></script>
                 <script src="/scripts/calendar.js"></script>
-                
-                <!--script src="/scripts/requests/xhrXmlScript.js" type="module"></script-->
             </head>
             <body>
             <header class="dark-background">
