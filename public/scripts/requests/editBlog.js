@@ -22,7 +22,7 @@ const submitMsgHandler = (event) => {
         text
     }
 
-    const req = $.ajax(`http://localhost/blog/edit-comment?postId=${postId}`, {
+    const req = $.ajax(`/blog/edit-comment?postId=${postId}`, {
         contentType: 'application/json',
         data: JSON.stringify(editedPost),
         method: 'POST',
