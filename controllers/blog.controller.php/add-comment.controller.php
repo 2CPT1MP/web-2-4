@@ -13,12 +13,18 @@ class AddCommentController extends RestController {
 
     public function POST(Request $request): string {
         header('Content-type: text/xml');
-        [$authenticated] = MessagesController::checkAuthorization();
+        [$authenticated, $role] = MessagesController::checkAuthorization();
 
         if (!$authenticated) {
             http_response_code(401);
             return "<error>Unauthorized</error>";
         }
+
+        if ($role === "ADMIN") {
+            http_response_code(403);
+            return "<error>Administrator cannot comment blog posts</error>";
+        }
+
         $inputXML = file_get_contents('php://input');
         $comment = new SimpleXMLElement($inputXML);
 
@@ -28,6 +34,7 @@ class AddCommentController extends RestController {
         $newComment = new Comment();
         $newComment->setComment($message);
         $newComment->setPostId((int)$postId);
+
         $newComment->setUserId((int)$_SESSION['userId']);
         $newComment->save();
 

@@ -26,22 +26,27 @@ class BlogView {
             $hasImg = $message->hasImage();
             $imagePath = ($hasImg)? $message->getImagePath() : "";
 
+            $form = "";
+            if (isset($_SESSION['username']) && isset($_SESSION['role']) && $_SESSION['role'] != 'ADMIN') {
+                $form = "<form action='' class='small message-form'>
+                        <input type='hidden' name='postId' value=\"{$message->getId()}\">
+                        <input type='text' placeholder='Добавить коментарий' name='message' required>
+                        <button type='submit' id='send-message'>Отправить</button>
+                    </form>";
+            }
+
             $msgs .= "
                <div class='msg-block' id=\"{$message->getId()}\">
                     <img src='/blog/userImage?id=$imagePath' width='50px' alt='Нет изображения'><br>
                     <p class='no-margin'>{$message->getTimestamp()}</p>
                     <b>{$message->getTopic()}</b><br>
                     <p class='no-margin'>{$message->getText()}</p>
-                    <form action='' class='small message-form'>
-                        <input type='hidden' name='postId' value=\"{$message->getId()}\">
-                        <input type='text' placeholder='Добавить коментарий' name='message' required>
-                        <button type='submit' id='send-message'>Отправить</button>
-                    </form>
+                    {$form}
                </div>
                <script src='/scripts/requests/xhrXmlScript.js' type='module'></script>
             ";
 
-            $msgs .= "<div>";
+            $msgs .= "<div class='messages-container' id=\"messages-container-{$message->getId()}\">";
             foreach ($message->getComments() as $comment)
                 $msgs .= "{$comment->getTimestamp()} <b>{$comment->getName()}</b> {$comment->getComment()}<br>";
             $msgs .= "</div>";

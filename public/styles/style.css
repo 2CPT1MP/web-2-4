@@ -328,5 +328,11 @@ header a {
 	width: fit-content;
 }
 
+.messages-container {
+	height: fit-content;
+	max-height: 200px;
+	overflow: auto;
+}
+
 
 

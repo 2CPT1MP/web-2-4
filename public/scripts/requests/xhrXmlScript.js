@@ -27,11 +27,10 @@ const submitHandler = (event) => {
         const timestamp = xmlDoc.getElementsByTagName("timestamp")[0].textContent;
         const name = xmlDoc.getElementsByTagName("name")[0].textContent;
 
-        const parentContainer = document.getElementById(postId);
+        const parentContainer = document.getElementById("messages-container-" + postId);
         const newComment = document.createElement("div");
         newComment.innerHTML = `${timestamp} <b>${name}</b> ${message}`;
-        parentContainer.appendChild(newComment);
-
+        parentContainer.prepend(newComment);
     }).catch(r => {
         console.log("ERROR");
     });

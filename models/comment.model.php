@@ -246,7 +246,8 @@ class Comment implements IEntity {
             "Comment::sync",
             "Comment::setRows",
             $filter,
-            $fetchAll
+            $fetchAll,
+            new DescendingOrder("timestamp")
         );
     }
 }
