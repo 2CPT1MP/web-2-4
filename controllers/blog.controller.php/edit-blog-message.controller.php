@@ -12,6 +12,12 @@ class EditBlogMessageController extends RestController {
     }
 
     public function POST(Request $request): string {
+        session_start();
+        if (!isset($_SESSION['role']) || $_SESSION['role'] !== "ADMIN") {
+            http_response_code(401);
+            return "";
+        }
+
         $inputJSON = json_decode(file_get_contents('php://input'), true);
         header("Content-Type: application/json");
 
