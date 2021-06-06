@@ -1,4 +1,3 @@
-
 <?php
 class HeaderView {
     public static function render(string $title): string {
@@ -25,7 +24,7 @@ class HeaderView {
         }
 
 
-        $env = getenv("WEB_BASE_URL");
+        //$env = getenv("WEB_BASE_URL");
 
 
         $html = <<<HTML
