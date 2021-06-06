@@ -1,7 +1,7 @@
 $(document).ready(function(){
-    $('form:not(.message-form)').submit(function(e) {
+    $('form:not(.message-form):not(.no-confirm)').submit(function(e) {
         e.preventDefault();
-        $('body > *:not(.confirm-dialog)').css({'filter': 'blur(1px)', 'pointer-events': 'none'});
+        $('body > *:not(.confirm-dialog):not(.no-confirm)').css({'filter': 'blur(1px)', 'pointer-events': 'none'});
         $('body').prepend('<div class="confirm-dialog"><p>Введённые данные верны?</p><button type="submit" ' +
             'id="confirm">Да</button><button id="cancel">Нет</button></div>').hide().fadeIn();
         $('.confirm-dialog').css({

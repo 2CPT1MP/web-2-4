@@ -35,15 +35,35 @@ class BlogView {
                     </form>";
             }
 
+            $editBtn = "";
+            $editForm = "";
+
+
+            if (isset($_SESSION['role']) && $_SESSION['role'] === 'ADMIN') {
+                $editBtn = "<button class='small'>Редактировать</button>";
+                $editForm = "
+                <form class='msg-block-form no-confirm' id=\"form-{$message->getId()}\" hidden>
+                    <img src='/blog/userImage?id=$imagePath' width='50px' alt='Нет изображения'><br>
+                    <input class='no-margin' name=\"topic\" value=\"{$message->getTopic()}\" required><br>
+                    <input class='no-margin' name=\"postId\" type=\"hidden\" value=\"{$message->getId()}\"><br>
+                    <textarea class='no-margin' name=\"text\" required>{$message->getText()}</textarea><br>
+                    <button class='small' type='submit'>Сохранить</button>
+               </form>";
+            }
             $msgs .= "
                <div class='msg-block' id=\"{$message->getId()}\">
                     <img src='/blog/userImage?id=$imagePath' width='50px' alt='Нет изображения'><br>
                     <p class='no-margin'>{$message->getTimestamp()}</p>
-                    <b>{$message->getTopic()}</b><br>
-                    <p class='no-margin'>{$message->getText()}</p>
+                    <b id=\"topic-{$message->getId()}\">{$message->getTopic()}</b><br>
+                    <p class='no-margin' id=\"text-{$message->getId()}\">{$message->getText()}</p>
                     {$form}
+                    $editBtn
                </div>
+               
+               $editForm
+               
                <script src='/scripts/requests/xhrXmlScript.js' type='module'></script>
+               <script src='/scripts/requests/editBlog.js'></script>
             ";
 
             $msgs .= "<div class='messages-container' id=\"messages-container-{$message->getId()}\">";

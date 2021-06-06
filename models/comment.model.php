@@ -233,8 +233,8 @@ class Comment implements IEntity {
                 comment VARCHAR(500) NOT NULL,
                 postId INTEGER NOT NULL,
                 userId INTEGER NOT NULL,
-                FOREIGN KEY (postId) REFERENCES BlogMessage(id),
-                FOREIGN KEY (userId) REFERENCES User(id)
+                FOREIGN KEY (postId) REFERENCES BlogMessage(id) ON DELETE CASCADE ,
+                FOREIGN KEY (userId) REFERENCES User(id) ON DELETE CASCADE
             );
         ");
         $query->execute();

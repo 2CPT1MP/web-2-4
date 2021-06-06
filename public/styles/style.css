@@ -324,9 +324,11 @@ header a {
 	color: white;
 }
 
-.small input, .small button {
+.small, .small input, .small button {
 	width: fit-content;
 }
+
+
 
 .messages-container {
 	height: fit-content;

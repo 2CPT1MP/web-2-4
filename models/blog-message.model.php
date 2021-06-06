@@ -10,7 +10,7 @@ class BlogMessage implements IEntity {
     private string | null $imagePath = null;
     private string $topic, $text, $timestamp;
     /** @var Comment[] $comments */
-    private array $comments;
+    private array $comments = [];
 
     /**
      * @return Comment[]
@@ -109,12 +109,12 @@ class BlogMessage implements IEntity {
         return $query->execute();
     }
 
-    static function findById(int $id): array {
+    static function findById(int $id): BlogMessage {
         self::sync();
         $idFilter = new Filter();
         $idFilter->addCondition("id", $id);
 
-        $result = self::find($idFilter);
+        $result = self::find($idFilter, false);
         $result->setComments(Comment::findForPost($result->getId()));
         return $result;
     }
